@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>售价计算器</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 10vh 0 0 0;
+      box-sizing: border-box;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      width: 80px;
+      margin-right: 2px;
+      text-align: right;
+    }
+
+    input {
+      height: 30px;
+      font-size: 18px;
+      padding: 2px 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 100px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="input-group">
+    <label for="costPrice">供货价：</label>
+    <input type="number" id="costPrice" min="0" required onkeypress="handleKeyPress(event, 'calculatePrice')" />
+  </div>
+
+  <div class="input-group">
+    <label for="sellingPrice">售价：</label>
+    <input type="number" id="sellingPrice" readonly />
+  </div>
+
+  <button onclick="calculatePrice()">计算</button>
+
+  <script>
+    function calculatePrice() {
+      const costPriceElement = document.getElementById('costPrice');
+      const sellingPriceElement = document.getElementById('sellingPrice');
+
+      // 获取供货价，并确保它不是负数
+      const costPrice = parseFloat(costPriceElement.value);
+      if (costPrice < 0 || isNaN(costPrice)) {
+        alert('供货价不能为负数,不能为空');
+        costPriceElement.value = ''; // 清空输入框
+        return;
+      }
+
+      // 计算售价
+      let sellingPrice;
+      if (costPrice < 15) {
+        sellingPrice = (costPrice + 7) / 0.8;
+      } else {
+        sellingPrice = (costPrice + 7) / 0.72;
+      }
+
+      // 设置售价输入框的值
+      sellingPriceElement.value = sellingPrice.toFixed(2);
+    }
+
+    function handleKeyPress(event, functionName) {
+      if (event.keyCode === 13) {
+        // 按下回车键时调用指定的函数
+        window[functionName]();
+      }
+    }
+  </script>
+</body>
+</html>
